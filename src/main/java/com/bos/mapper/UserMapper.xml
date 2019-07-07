@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.bos.dao.UserMapper">
+ 	
+ 	<resultMap type="user" id="baseResultMap">
+ 		<id property="id" column="id"/>
+ 		<result property="username" column="username"/>
+ 		<result property="password" column="password"/>
+ 		<result property="gender" column="gender"/>
+ 		<result property="createDate" column="createDate"/>
+ 		<result property="address" column="address"/>
+ 		<result property="telephone" column="telephone"/>
+ 		<result property="remark" column="remark"/>
+ 	</resultMap>
+ 	
+ 	<resultMap type="user" id="fullResultMap" extends="baseResultMap">
+ 		<association property="role" javaType="role">
+ 			<id property="id" column="rid"/>
+	 		<result property="roleName" column="roleName"/>
+ 		</association>
+ 	</resultMap>
+ 	<!-- 根据用户名查询用户信息 -->
+ 	<select id="findUserByName" resultMap="fullResultMap">
+ 		select r.id rid,r.roleName,u.* from user u inner join role r 
+ 		on u.roleId = r.id
+		where u.username = #{username}
+ 	</select>
+ </mapper>
